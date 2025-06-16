@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Girlfriend</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff0f5;
+            padding: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input, textarea {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #ff69b4;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .note {
+            font-size: 0.85em;
+            font-style: italic;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        #response {
+            margin-top: 25px;
+            font-style: italic;
+            background-color: #fef6fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        small {
+            color: gray;
+            font-size: 0.8rem;
+            margin-top: -0.8rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💕 Talk to Waguri</h1>
+
+        <form id="chatForm" action="{{ url_for('submit_key') }}" method="POST">
+            <label for="openrouter_key">OpenRouter API Key:</label>
+            <input type="text" id="openrouter_key" name="openrouter_key" required placeholder="Paste your OpenRouter key">
+
+            <label for="eleven_key">ElevenLabs API Key:</label>
+            <input type="text" id="eleven_key" name="eleven_key" placeholder="Paste your ElevenLabs key (optional)">
+            <small>Leave this blank if you don't want a voice reply.</small>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="response"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("chatForm");
+            const openrouter_key = document.getElementById('openrouter_key');
+            const eleven_key = document.getElementById('eleven_key');
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                const openrouterKey = document.getElementById("openrouter_key").value.trim();
+                const elevenKey = document.getElementById("eleven_key").value.trim();
+
+                if (!openrouterKey) {
+                    alert("Please enter your OpenRouter API key.");
+                    return;
+                }
+
+                // Store keys in localStorage
+                localStorage.setItem("openrouter_key", openrouterKey);
+                if (elevenKey) {
+                    localStorage.setItem("eleven_key", elevenKey);
+                }
+
+                // Send to backend
+                fetch("/submit_key", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `openrouter_key=${encodeURIComponent(openrouterKey)}&eleven_key=${encodeURIComponent(elevenKey)}`
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url; // follow redirect
+                    } else {
+                        alert("Something went wrong. Try again.");
+                    }
+                });
+
+                /*let openrouter_api_key;
+                let elevenlabs_api_key;
+
+                if (openrouter_key) {
+                    if (eleven_key == "") {
+                        openrouter_api_key = openrouter_key.value.trim();
+                    } else {
+                        openrouter_api_key = openrouter_key.value.trim();
+                        elevenlabs_api_key = eleven_key.value.trim();
+                    }
+
+                    localStorage.setItem('openrouter_key', openrouter_api_key);
+                    localStorage.setItem('elevenlabs_key', elevenlabs_api_key);
+
+                    window.location.href = "/index";
+                } else {
+                    alert("Please enter an API key.");
+                }*/
+
+        
+        
+            });
+        })
+        
+        /*document.getElementById("chatForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            //const form = event.target;
+            const form = document.getElementById("chatForm");
+            const openrouterKey = document.getElementById("openrouter_key").value.trim();
+            const elevenKey = document.getElementById("eleven_key").value.trim();
+            
+            localStorage.setItem("openrouter_key", openrouterKey);
+
+            if (!openrouterKey) {
+                alert("Please fill in a VALID API Key!");
+                return;
+            }
+
+            window.location.href = "index/html";
+
+        });
+
+            /*const formData = new FormData();
+            formData.append("openrouter_key", openrouterKey);
+            formData.append("eleven_key", elevenKey);
+            formData.append("input_message", "correct");
+
+            const responseBox = document.getElementById("response");
+            responseBox.innerText = "Waguri is thinking...";
+
+            try {
+                const response = await fetch("/send_message", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.redirect) {
+                    window.location.href = data.redirect;  // 👈 Perform redirect
+                } else if (data.reply) {
+                    document.getElementById("response").innerHTML = data.reply || "Unexpected Error.";
+                }
+
+                //const result = await response.json();
+                //responseBox.innerText = "Waguri: " + result.reply;
+            } catch (err) {
+                console.error(err);
+                responseBox.innerText = "Something went wrong. Please try again.";
+            }
+        });*/
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Girlfriend</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="chat-header">
+            <h1>Chat with Waguri💕</h1>
+            <button id="clearButton" onclick="clearChat()">Clear Chat</button>
+        </div>
+
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="modeToggle">
+                <span class="slider"></span>
+            </label>
+            <span id="modeLabel">Light Mode</span>
+        </div>
+
+        <div id="chatbox" class="chatbox"></div>
+
+        <form id="chatForm" method="POST" action="/send_message">
+            <textarea type="text" name="input_message" id="inputMessage" placeholder="Type your message..." required></textarea>
+            <button type="submit">➤</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('chatForm');
+        const input = document.getElementById('inputMessage');
+        //const chatbox = document.getElementById('chatbox');
+        const chatbox = document.querySelector('.chatbox');
+        const modeToggle = document.getElementById('modeToggle');
+        const modeLabel = document.getElementById('modeLabel');
+        const body = document.body;
+
+        const openrouter_key = localStorage.getItem('openrouter_key');
+        const elevenlabs_key = localStorage.getItem('elevenlabs_key');
+
+        //document.getElementById('openrouter_key').textContent = openrouter_key;
+        //document.getElementById('elevenlabs_key').textContent = elevenlabs_key;
+
+        // Apply saved theme on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedChat = localStorage.getItem('chatHistory');
+            if (savedChat) chatbox.innerHTML = savedChat;
+
+            const savedMode = localStorage.getItem('mode');
+            if (savedMode === 'dark') {
+                document.body.classList.add('dark');
+                modeToggle.checked = true;
+                modeLabel.textContent = 'Dark Mode';
+            } else {
+                document.body.classList.remove('dark');
+                modeToggle.checked = false;
+                modeLabel.textContent = 'Light Mode';
+            }
+        });
+
+        // Toggle light/dark theme and save to localstorage
+        modeToggle.addEventListener('change', () => {
+            //document.body.classList.toggle('dark');
+            //modeLabel.textContent = document.body.classList.contains('dark') ? 'Dark Mode' : 'Light Mode';
+            if (modeToggle.checked) {
+                document.body.classList.add('dark');
+                modeLabel.textContent = 'Dark Mode';
+                localStorage.setItem('mode', 'dark');
+            } else {
+                document.body.classList.remove('dark');
+                modeLabel.textContent = 'Light Mode';
+                localStorage.setItem('mode', 'light');
+            }
+        });
+
+        // Format text for *bold* and _italic_
+        function formatText(text) {
+            return text
+                // Format actions in (parentheses) as bold and italic, including keeping the parentheses
+                .replace(/\(([^)]+)\)/g, '<strong><em>($1)</em></strong>')
+                // Format *text* as bold
+                .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+                // Format _text_ as italic
+                .replace(/_(.*?)_/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+                //.replace(/\*(.*?)\*/g, '<strong>$1</strong>')       // *bold*
+                //.replace(/_(.*?)_/g, '<em>$1</em>')                 // _italic_
+                //.replace(/\((.*?)\)/g, '<i><b>($1)</b></i>')        // (action)
+                //.replace(/\n/g, '<br>');                            // newlines
+        }
+
+        function showTyping() {
+            /*const typing = document.createElement("div");
+            typing.className = "typing-indicator bubble waguri";
+            typing.id = "typing-indicator";
+            typing.innerHTML = `<span class="typing-text">typing<span class="typing-dots"></span></span>`;
+            chatbox.appendChild(typing);
+            chatbox.scrollTop = chatbox.scrollHeight; // auto scroll down*/
+            const typingWrapper = document.createElement("div");
+            typingWrapper.className = "message-wrapper waguri";
+            typingWrapper.id = "typing-indicator";
+            typingWrapper.innerHTML = `
+                <img src="/static/images/waguri_pfp.jpg" alt="Waguri" class="profile-pic" onclick="openFullImage(this)" data-fullsize="/static/images/waguri_pfp.jpg">
+                <div class="typing-indicator bubble waguri">
+                    <span class="typing-text">typing<span class="typing-dots"></span></span>
+                </div>
+            `;
+            chatbox.appendChild(typingWrapper);
+            chatbox.scrollTop = chatbox.scrollHeight; // auto scroll down
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById("typing-indicator");
+            if (typing) typing.remove();
+        }
+
+        // Load saved chat history on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedChat = localStorage.getItem('chatHistory');
+            if (savedChat) {
+                chatbox.innerHTML = savedChat;
+            }
+
+            // Restore theme from localStorage
+            const savedMode = localStorage.getItem('mode');
+            if (savedMode === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('modeToggle').checked = true;
+                document.getElementById('modeLabel').textContent = 'Dark Mode';
+            }
+        });
+
+        // Save chat history to localStorage
+        function saveChatHistory() {
+            localStorage.setItem('chatHistory', chatbox.innerHTML);
+        }
+
+        function clearChat() {
+            localStorage.removeItem('chatHistory');
+            document.getElementById('chatbox').innerHTML = '';
+        }
+
+        function appendMessage(text, sender) {
+            /*const bubble = document.createElement('div');
+            bubble.className = `bubble ${sender}`;
+            bubble.innerHTML = formatText(text);
+            chatbox.appendChild(bubble);*/
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = `message-wrapper ${sender}`;
+
+            if (sender === 'waguri') {
+                messageWrapper.innerHTML = `
+                    <img src="/static/images/waguri_pfp.jpg" alt="Waguri" class="profile-pic" onclick="openFullImage(this)" data-fullsize="/static/images/waguri_pfp.jpg">
+                    <div class="bubble waguri">${formatText(text)}</div>
+                `;
+            } else {
+                messageWrapper.innerHTML = `<div class="bubble user">${formatText(text)}</div>`;
+            }
+
+            chatbox.appendChild(messageWrapper);
+
+            chatbox.scrollTop = chatbox.scrollHeight;
+            saveChatHistory();
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = input.value.trim();
+            if (!message) return;
+
+            appendMessage(message, 'user');
+
+            showTyping();
+
+            const formData = new FormData(form);
+            fetch('/send_message', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideTyping();
+                appendMessage(formatText(data.reply), 'waguri');
+            })
+            .catch(() => {
+                appendMessage("Sorry, I'm having trouble responding right now...", 'waguri');
+            });
+
+            form.reset();
+        });
+
+        function openFullImage(img) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+            modal.style.display = "block";
+            modalImg.src = img.getAttribute('data-fullsize');
+        }
+
+        function closeFullImage() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+
+    </script>
+
+    <div id="imageModal" class="modal" onclick="closeFullImage()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+</body>
+</html>
