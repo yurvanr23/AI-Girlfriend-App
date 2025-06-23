@@ -6,19 +6,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         body {
+            justify-content: center;
+            align-items: center;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #fff0f5;
             padding: 30px;
-            color: #333;
+            color: #fffefe;
+            display: flex;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-image: url("{{ url_for('static', filename='images/anime_background.jpg') }}");
         }
 
         .container {
-            max-width: 400px;
-            margin: auto;
-            background: white;
+            max-width: 600px;
+            /* margin: auto; */
+            background: rgb(67, 67, 67);
             padding: 30px;
+            border: 2px solid white;
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            background: transparent;
         }
 
         h1 {
@@ -46,6 +57,10 @@
 
         textarea {
             resize: vertical;
+        }
+
+        #response {
+            display: none;
         }
 
         button {
@@ -88,15 +103,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>💕 Talk to Waguri</h1>
+        <h1>💕 Talk with AI Anime Girlfriends💕</h1>
 
         <form id="chatForm" action="{{ url_for('submit_key') }}" method="POST">
             <label for="openrouter_key">OpenRouter API Key:</label>
-            <input type="text" id="openrouter_key" name="openrouter_key" required placeholder="Paste your OpenRouter key">
+            <input type="text" id="openrouter_key" name="openrouter_key" size="35" required placeholder="Paste your OpenRouter key">
 
-            <label for="eleven_key">ElevenLabs API Key:</label>
-            <input type="text" id="eleven_key" name="eleven_key" placeholder="Paste your ElevenLabs key (optional)">
-            <small>Leave this blank if you don't want a voice reply.</small>
+            <label for="api_model">Corresponding Model:</label>
+            <input type="text" id="api_model" name="api_model" size="35" placeholder="Paste the corresponding model">
 
             <button type="submit">Submit</button>
         </form>
@@ -108,13 +122,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             const form = document.getElementById("chatForm");
             const openrouter_key = document.getElementById('openrouter_key');
-            const eleven_key = document.getElementById('eleven_key');
+            const api_model = document.getElementById('api_model');
 
             form.addEventListener("submit", function(e) {
                 e.preventDefault();
 
                 const openrouterKey = document.getElementById("openrouter_key").value.trim();
-                const elevenKey = document.getElementById("eleven_key").value.trim();
+                const apiModel = document.getElementById("api_model").value.trim();
 
                 if (!openrouterKey) {
                     alert("Please enter your OpenRouter API key.");
@@ -123,8 +137,8 @@
 
                 // Store keys in localStorage
                 localStorage.setItem("openrouter_key", openrouterKey);
-                if (elevenKey) {
-                    localStorage.setItem("eleven_key", elevenKey);
+                if (apiModel) {
+                    localStorage.setItem("api_model", apiModel);
                 }
 
                 // Send to backend
@@ -133,7 +147,7 @@
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    body: `openrouter_key=${encodeURIComponent(openrouterKey)}&eleven_key=${encodeURIComponent(elevenKey)}`
+                    body: `openrouter_key=${encodeURIComponent(openrouterKey)}&api_model=${encodeURIComponent(apiModel)}`
                 })
                 .then(response => {
                     if (response.redirected) {
@@ -147,11 +161,11 @@
                 let elevenlabs_api_key;
 
                 if (openrouter_key) {
-                    if (eleven_key == "") {
+                    if (api_model == "") {
                         openrouter_api_key = openrouter_key.value.trim();
                     } else {
                         openrouter_api_key = openrouter_key.value.trim();
-                        elevenlabs_api_key = eleven_key.value.trim();
+                        elevenlabs_api_key = api_model.value.trim();
                     }
 
                     localStorage.setItem('openrouter_key', openrouter_api_key);
@@ -173,7 +187,7 @@
             //const form = event.target;
             const form = document.getElementById("chatForm");
             const openrouterKey = document.getElementById("openrouter_key").value.trim();
-            const elevenKey = document.getElementById("eleven_key").value.trim();
+            const apiModel = document.getElementById("api_model").value.trim();
             
             localStorage.setItem("openrouter_key", openrouterKey);
 
@@ -188,7 +202,7 @@
 
             /*const formData = new FormData();
             formData.append("openrouter_key", openrouterKey);
-            formData.append("eleven_key", elevenKey);
+            formData.append("api_model", apiModel);
             formData.append("input_message", "correct");
 
             const responseBox = document.getElementById("response");

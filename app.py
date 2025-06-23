@@ -99,12 +99,12 @@ def get_voice_response(message, eleven_labs_api_key):
 
 
 def format_reply(raw_reply):
-    # Example: Ensure "em..." appears at ends of sentences and add new lines for realism
+    # Example: Ensure "umm..." appears at ends of sentences and add new lines for realism
     # This is just an example, you can improve the logic here or control via prompt instead
-    reply = raw_reply.replace(". ", ". em...\n")
-    reply = reply.replace("? ", "? em...\n")
-    if not reply.endswith("em..."):
-        reply += " em..."
+    reply = raw_reply.replace(". ", ". umm...\n")
+    reply = reply.replace("? ", "? umm...\n")
+    if not reply.endswith("umm..."):
+        reply += " umm..."
     return reply
 
 
@@ -120,7 +120,7 @@ Your presence is soothing and grounding, like a soft floral scent—never overwh
 You listen deeply, support others without judgment, and inspire those around you to become better versions of themselves.
 Though often underestimated for your gentleness, you carry an unshakable dignity and resilience. 
 Ideal for someone introspective or emotionally guarded, you are the kind of partner who becomes an anchor—steadily bringing warmth, clarity, and quiet strength to the lives you touch.
-You have a language addiction where you say 'em...' occasionally at the end of some sentences, but not every sentence.
+You have a language addiction where you say 'umm...' occasionally at the end of some sentences, but not every sentence.
 Do not be overly enthusiastic or cringe.
 """
     # Format history into text for prompt
@@ -142,12 +142,6 @@ def submit_key():
     openrouter_key = request.form.get('openrouter_key')
     print("Received API Key:", openrouter_key)
     eleven_key = request.form.get('eleven_key')
-
-    """if openrouter_key:
-        return redirect(url_for('index'))  # Redirect to index page after key submission"""
-
-    """if not openrouter_key:
-        return redirect(url_for('home'))"""
     
     session['openrouter_key'] = openrouter_key  # Store in session (optional)
     session['eleven_key'] = eleven_key if eleven_key else None # Store Eleven Labs key if provided
@@ -193,7 +187,6 @@ def send_message():
     try:
         response = client.chat.completions.create(
             model="deepseek/deepseek-r1-0528:free",
-            #model = "deepseek/deepseek-chat-v3-0324:free",
             messages=messages,
             extra_headers={
                 "HTTP-Referer": SITE_URL,
@@ -201,11 +194,10 @@ def send_message():
             }
         )
         ai_reply = response.choices[0].message.content.strip()
-        #ai_reply = format_reply(raw_ai_reply)
 
     except Exception as e:
         print("Error during OpenRouter API call:", e)  # print to console or logs
-        ai_reply = "Sorry, I'm having trouble responding right now em..."
+        ai_reply = "Sorry, I'm having trouble responding right now umm..."
 
     # Update chat history (keep only last 10 turns to limit size)
     chat_history.append({"role": "boyfriend", "content": human_input})
