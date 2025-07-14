@@ -101,6 +101,7 @@
             width: 250px;
             padding: 10px 14px;
             background-color: white;
+            z-index: 1000;
         }
 
         .search-box {
@@ -146,6 +147,10 @@
             object-fit: cover;  /* ensure image scales without distortion */
         }
 
+        .waifu-one:hover {
+            transform: scale(1.15);
+        }
+
         .sidebar li .nav-link {
             display: flex;
             align-items: center;
@@ -184,12 +189,55 @@
             margin: 0 auto;        /* center the list block itself */
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            padding-top: 60px;
+            overflow: auto;
+            z-index: 9999; /* High enough to be on top of sidebar */
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
 
+        .modal-content {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            display: block; 
+            margin: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 30px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
 
 
     </style>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        function openFullImage(img) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+            modal.style.display = "block";
+            modalImg.src = img.getAttribute('data-fullsize');
+        }
+
+        function closeFullImage() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+    </script>
 </head>
 <body>
         <nav class="sidebar">
@@ -218,36 +266,36 @@
                     <ul class="menu-link">
                         <li class="nav-link">
                             <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waifu 1</span>
+                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/waguri_pfp.jpg">
+                                <span class="text nav-text">Waguri Kaoruko</span>
                             </a>
                         </li>
 
                         <li class="nav-link">
                             <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waifu 1</span>
+                                <img class="waifu-one" src="/static/images/rin_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/rin_pfp.jpg">
+                                <span class="text nav-text">Rin Tohsaka</span>
                             </a>
                         </li>
 
                         <li class="nav-link">
                             <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waifu 1</span>
+                                <img class="waifu-one" src="/static/images/asuna1_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/asuna1_pfp.jpg">
+                                <span class="text nav-text">Asuna Yuuki</span>
                             </a>
                         </li>
 
                         <li class="nav-link">
                             <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waifu 1</span>
+                                <img class="waifu-one" src="/static/images/yukino_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/yukino_pfp.jpg">
+                                <span class="text nav-text">Yukino Yukinoshita</span>
                             </a>
                         </li>
 
                         <li class="nav-link">
                             <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waifu 1</span>
+                                <img class="waifu-one" src="/static/images/chinatsu_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/chinatsu_pfp.jpg">
+                                <span class="text nav-text">Chinatsu Kano</span>
                             </a>
                         </li>
 
@@ -261,5 +309,10 @@
                 </div>
             </div>
         </nav>
+
+        <div id="imageModal" class="modal" onclick="closeFullImage()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
 </body>
 </html>
