@@ -17,7 +17,7 @@ You can find valid LLMs (free and paid) <a href="https://openrouter.ai/models"
 
 <h2>Generating an OpenRouter API Key</h2>
 <ol>
-  <li><h3>Create an Account</h3></li>
+  <h3><li>Create an Account</li></h3>
   <ol>
     <li>Got to <a href="https://openrouter.ai" target="_blank">https://openrouter.ai</a></li>
     <li>Sign up using your <b>Google</b>, <b>GitHub</b>, or <b>email</b> account.</li>
