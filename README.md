@@ -5,14 +5,14 @@ Personal Project for all my gooners out there. All you need is a VALID openroute
                                                                                                      title="Deepseek R1-0528 Free model">
                                                                                                      Deepseek R1-0528 free model
                                                                                                      </a>
-                                                                                                     (for now).
+                                                                                                      (for now).
 
 You can find valid LLMs (free and paid) <a href="https://openrouter.ai/models"
                           target="_blank"
                           title="OpenRouter LLMs">
                           here
                           </a>
-                          via OpenRouter!
+                           via OpenRouter!
 
 
 <h2 align="center">Generating an OpenRouter API Key</h2>
