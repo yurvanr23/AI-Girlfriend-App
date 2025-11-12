@@ -1,4 +1,4 @@
-<h1 align="center"><b>AI-Girlfriend-App</b></h1>
+<h1 align="center"><b>😍AI-Girlfriend-App😍</b></h1>
 
 Personal Project for all my gooners out there. All you need is a VALID openrouter API key from the <a href="https://openrouter.ai/deepseek/deepseek-r1-0528:free"
                                                                                                      target="_blank"
