@@ -1,4 +1,4 @@
-# AI-Girlfriend-App
+<h1 align="center"><b>AI-Girlfriend-App</b></h1>
 
 Personal Project for all my gooners out there. All you need is a VALID openrouter API key from the <a href="https://openrouter.ai/deepseek/deepseek-r1-0528:free"
                                                                                                      target="_blank"
@@ -15,7 +15,7 @@ You can find valid LLMs (free and paid) <a href="https://openrouter.ai/models"
                           via OpenRouter!
 
 
-<h2>Generating an OpenRouter API Key</h2>
+<h2 align="center">Generating an OpenRouter API Key</h2>
 <ol>
   <h3><li>Create an Account</li></h3>
   <ol>
