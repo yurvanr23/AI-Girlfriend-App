@@ -44,11 +44,8 @@ The AI-Girlfriend-App allows users to chat with an AI-powered companion using Op
                           title="OpenRouter LLMs">
                           here
                           </a></li>
+    <li>To get the Model ID, scroll under the <tt>Overview</tt> Section until you see the following code block:</li>
   </ul>
-
-<p>
-  To get the Model ID, scroll under the <tt>Overview</tt> Section until you see the following code block:
-</p> 
 
 <p>
   <img width="869" height="666" alt="image" src="https://github.com/user-attachments/assets/a6127cac-963a-4b1f-b76c-53fb2053b4e6" />
