@@ -28,7 +28,7 @@ You can find valid LLMs (free and paid) <a href="https://openrouter.ai/models"
   <ol>
     <li>Visit your API keys page: <a href="https://openrouter.ai/keys" target="_blank">https://openrouter.ai/keys</a></li>
     <li>Click "<b>Create Key</b>" and give it a recognizable name (e.g. <tt>my-app-key</tt>)</li>
-    <li>Copy the API key (it will look something like this: <tt>sk-or-v1-1234abcd5678efgh9012ijkl</tt></li>
+    <li>Copy the API key (it will look something like this: <tt>sk-or-v1-1234abcd5678efgh9012ijkl</tt>)</li>
   </ol>
 
   <h3><li>Choose your Model</li></h3>
