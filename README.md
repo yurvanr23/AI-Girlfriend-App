@@ -24,7 +24,7 @@ The AI-Girlfriend-App allows users to chat with an AI-powered companion using Op
 <ol>
   <h3><li>Create an Account</li></h3>
   <ol>
-    <li>Got to <a href="https://openrouter.ai" target="_blank">https://openrouter.ai</a></li>
+    <li>Go to <a href="https://openrouter.ai" target="_blank">https://openrouter.ai</a></li>
     <li>Sign up using your <b>Google</b>, <b>GitHub</b>, or <b>email</b> account.</li>
     <li>Once logged in, navigate to your <b>profile</b> in the top-right corner.</li>
   </ol>
