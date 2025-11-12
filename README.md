@@ -32,14 +32,14 @@ You can find valid LLMs (free and paid) <a href="https://openrouter.ai/models"
   </ol>
 
   <h3><li>Choose your Model</li></h3>
-  OpenRouter supports a wide range of models.<br>
-  You can browse available models here: <a href="https://openrouter.ai/models"
+  - OpenRouter supports a wide range of models.<br>
+  - You can browse available models <a href="https://openrouter.ai/models"
                           target="_blank"
                           title="OpenRouter LLMs">
                           here
                           </a>
 
-  To get the Model ID, scroll under the <tt>Overview</tt> Section until you see the following code block: <img width="869" height="666" alt="image" src="https://github.com/user-attachments/assets/a6127cac-963a-4b1f-b76c-53fb2053b4e6" />
+- To get the Model ID, scroll under the <tt>Overview</tt> Section until you see the following code block: <img width="869" height="666" alt="image" src="https://github.com/user-attachments/assets/a6127cac-963a-4b1f-b76c-53fb2053b4e6" />
 
   In this example, if you want to use <b>DeepSeek: R1-0528</b>, the model ID is: <tt>deepseek/deepseek-r1-0528:free</tt>
 
