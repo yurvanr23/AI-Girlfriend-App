@@ -4,327 +4,13 @@
     <meta charset="UTF-8">
     <title>Dashboard Sidebar Menu</title>
     <!-- ==== CSS === -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body {
-            height: 100vh;
-            background-color: white;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/selection.css') }}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 
-        .favourite {
-            margin-left: auto;
-            cursor: pointer;
-            font-size: 28px;
-            color: #999;
-        }
-
-        .favourite:hover {
-            transform: scale(1.5);
-            color: rgb(214, 183, 2);
-        }
-
-        .favourite.favourited {
-            color: gold;
-        }
-
-        .sidebar .image-text img {
-            width: 40px;
-            border-radius: 6px;
-        }
-
-        .sidebar .text {
-            font-size: 16px;
-            font-weight: 500;
-            color: grey;
-        }
-
-        .sidebar .toggle {
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .sidebar.collapsed .text,
-        .sidebar.collapsed .header-text {
-            display: none;
-        }
-
-        .sidebar.collapsed {
-            width: 80px;
-        }
-
-        .sidebar.collapsed .text {
-            display: none;
-        }
-
-        .sidebar.collapsed .toggle {
-            transform: rotate(180deg) translateY(50%);
-        }
-
-        .sidebar header {
-            position: relative;
-        }
-
-        .sidebar .image {
-            min-width: 60px;
-            display: flex;
-            align-items: center;
-        }
-
-        header .image-text .header-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header-text .name {
-            font-weight: 600;
-        }
-
-        .header-text .profession {
-            margin-top: -2px;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .sidebar header .image-text {
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar li .search-bar {
-            font-size: 20px;
-            min-width: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sidebar li .search-bar,
-        .sidebar li .text {
-            color: blue;
-            transition: rgb(58, 57, 57);
-        }
-
-        .sidebar li {
-            height: 50px;
-            /* background: lightblue; */
-            margin-top: 10px;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-        }
-
-        .sidebar li a {
-            text-decoration: none;
-            height: 100%;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            transition: rgb(60, 60, 60);
-        }
-
-        .sidebar li a:hover {
-            background: rgb(221, 105, 250);
-        }
-
-        .sidebar li a:hover .search-bar,
-        .sidebar li a:hover .text {
-            color: rgb(255, 255, 255);
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 250px;
-            padding: 10px 14px;
-            background-color: rgb(228, 170, 251);;
-            z-index: 1000;
-            transition: width 0.3s ease;
-        }
-
-        .search-box {
-            margin-bottom: 30px;
-            padding: 5px;
-        }
-
-        .sidebar header .toggle {
-            position: absolute;
-            top: 50%;
-            right: -25px;
-            transform: translateY(-50%);
-            height: 30px;
-            width: 30px;
-            background: purple;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .search-box .sidebar {
-            background: lightcoral;
-
-        }
-
-        .search-box input {
-            height: 100%;
-            width: 100%;
-            background: rgb(183, 182, 182);
-            outline: none;
-            border: none;
-            border-radius: 6px;
-        }
-
-        .waifu-one {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%; /* make them circular */
-            margin-left: 8px;
-            margin-right: 30px; /* spacing between icon and text */
-            object-fit: cover;  /* ensure image scales without distortion */
-        }
-
-        .waifu-one:hover {
-            transform: scale(1.15);
-        }
-
-        .nav-link {
-            transition: transform 0.2s ease;
-        }
-
-        .nav-link:hover {
-            transform: scale(1.05);
-        }
-
-        .sidebar li .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: none;
-        }
-
-        .sidebar li .nav-link a {
-            display: flex;
-            align-items: center;
-            background-color: lightblue;
-            padding: 10px 12px;
-            border-radius: 6px;
-            width: 100%;
-            transition: background 0.3s ease;
-        }
-
-        .search-container {
-            position: relative;
-            width: 100%;
-            height: 32px;
-        }
-
-        .search-container input {
-            padding-left: 35px;
-            height: 100%;
-            width: 100%;
-            border-radius: 6px;
-            border: none;
-            background: #d1d1d1;
-            color: #222;
-            font-size: 14px;
-        }
-
-        .search-bar {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            opacity: 0.7;
-            border-radius: 50%; /* make them circular */
-            margin-right: 12px; /* spacing between icon and text */
-            object-fit: cover;  /* ensure image scales without distortion */
-        }
-
-        .menu-bar {
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* vertically center the content */
-        }
-
-        .menu-link {
-            display: flex;
-            flex-direction: column;
-            padding-left: 0;       /* remove default padding */
-            margin: 0 auto;        /* center the list block itself */
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            padding-top: 60px;
-            overflow: auto;
-            z-index: 9999; /* High enough to be on top of sidebar */
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            display: block; 
-            margin: auto;
-        }
-
-        .close {
-            position: absolute;
-            top: 30px;
-            right: 35px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .filter-controls {
-            margin-top: 4px; /* reduce from 10px */
-            padding: 2px 5px; /* reduce vertical padding */
-            display: flex;
-            align-items: center;
-            /* gap: 10px; */
-        }
-
-        .filter-controls input {
-            margin-right: 5px;
-        }
-
-        .filter-controls label,
-        .filter-controls input[type="checkbox"] {
-            cursor: pointer;
-        }
-
-
-    </style>
     <script type="text/javascript">
         function openFullImage(img) {
             const modal = document.getElementById("imageModal");
@@ -338,8 +24,10 @@
         }
     </script>
 </head>
+
+
 <body>
-        <nav class="sidebar">
+        <div class="sidebar">
             <header>
                 <div class="image-text">
                     <span class="image">
@@ -352,171 +40,199 @@
                     </div>
                 </div>
 
-                <img class="toggle" src="/static/images/chevron_right.png">
+                <img class="toggle"> <!--src="/static/images/chevron_right.png"-->
             </header>
 
-            <div class="menu-bar">
-                <div class="menu">
-                    <li class="search-box">
-                        <div class="search-container">
-                            <img class="search-bar">
-                            <input type="search" id="waifuSearch" placeholder="Search...">
-                        </div>
-                    </li>
+            <div class="app-container">
+                <div class="menu-bar">
+                    <div class="menu-header">
+                        <li class="search-box">
+                            <div class="search-container">
+                                <!--<img class="search-bar" src="/static/images/search.png" alt="Search Icon">-->
+                                <input type="search" id="waifuSearch" placeholder="Search...">
+                            </div>
+                        </li>
 
-                    <div class="filter-controls">
-                        <label><input type="checkbox" id="filterFavourites">Show Favourites Only</label>
+                        <div class="filter-controls">
+                            <label><input type="checkbox" id="filterFavourites">Favourites</label>
+
+                            <select id="sortSelect" style="margin-left: 10px; padding: 4px;">
+                                <option value="asc">Name A-Z</option>
+                                <option value="desc">Name Z-A</option>
+                                <option value="popularity">Popularity</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <ul class="menu-link" id="waifuList">
-                        <li class="nav-link" data-name="Waguri Kaoruko">
-                            <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waguri Kaoruko</span>
-                                <span class="favourite" onclick="toggleFavourite(event, 'Waguri Kaoruko')">★</span>
-                            </a>
-                        </li>
+                    <div class="menu-scroll" id="waifuList">
+                        <ul class="menu-link">
+                            <li class="nav-link" data-name="Waguri Kaoruko" data-img="/static/images/asuna1_pfp.jpg" data-desc="A skilled swordswoman from Sword Art Online, kind and brave.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/waguri_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/waguri_pfp.jpg">
+                                    <span class="text nav-text">Waguri Kaoruko</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Waguri Kaoruko')">★</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-link" data-name="Rin Tohsaka">
-                            <a href="#">
-                                <img class="waifu-one" src="/static/images/rin_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/rin_pfp.jpg">
-                                <span class="text nav-text">Rin Tohsaka</span>
-                                <span class="favourite" onclick="toggleFavourite(event, 'Rin Tohsaka')">★</span>
-                            </a>
-                        </li>
+                            <li class="nav-link" data-name="Rin Tohsaka" data-img="/static/images/rin_pfp.jpg" data-desc="An intelligent and elegant mage from the Fate series.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/rin_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/rin_pfp.jpg">
+                                    <span class="text nav-text">Rin Tohsaka</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Rin Tohsaka')">★</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-link" data-name="Asuna Yuuki">
-                            <a href="#">
-                                <img class="waifu-one" src="/static/images/asuna1_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/asuna1_pfp.jpg">
-                                <span class="text nav-text">Asuna Yuuki</span>
-                                <span class="favourite" onclick="toggleFavourite(event, 'Asuna Yuuki')">★</span>
-                            </a>
-                        </li>
+                            <li class="nav-link" data-name="Asuna Yuuki" data-img="/static/images/asuna1_pfp.jpg" data-desc="A skilled swordswoman from Sword Art Online, kind and brave.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/asuna1_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/asuna1_pfp.jpg">
+                                    <span class="text nav-text">Asuna Yuuki</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Asuna Yuuki')">★</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-link" data-name="Yukino Yukinoshita">
-                            <a href="#">
-                                <img class="waifu-one" src="/static/images/yukino_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/yukino_pfp.jpg">
-                                <span class="text nav-text">Yukino Yukinoshita</span>
-                                <span class="favourite" onclick="toggleFavourite(event, 'Yukino Yukinoshita')">★</span>
-                            </a>
-                        </li>
+                            <li class="nav-link" data-name="Yukino Yukinoshita" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/yukino_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/yukino_pfp.jpg">
+                                    <span class="text nav-text">Yukino Yukinoshita</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Yukino Yukinoshita')">★</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-link" data-name="Chinatsu Kano">
-                            <a href="#">
-                                <img class="waifu-one" src="/static/images/chinatsu_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/chinatsu_pfp.jpg">
-                                <span class="text nav-text">Chinatsu Kano</span>
-                                <span class="favourite" onclick="toggleFavourite(event, 'Chinatsu Kano')">★</span>
-                            </a>
-                        </li>
+                            <li class="nav-link" data-name="Chinatsu Kano" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/chinatsu_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/chinatsu_pfp.jpg">
+                                    <span class="text nav-text">Chinatsu Kano</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Chinatsu Kano')">★</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-link" data-name="Waifu One">
-                            <a href="#">
-                                <img class="waifu-one" src="/static/images/waguri_pfp.jpg">
-                                <span class="text nav-text">Waifu 1</span>
-                                <span class="favourite" onclick="toggleFavourite(event, 'Waifu One')">★</span>
-                            </a>
-                        </li>
-                    </ul>
+                            <li class="nav-link" data-name="Asuka Langley Soryu" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/asuka1_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/asuka1_pfp.jpg">
+                                    <span class="text nav-text">Asuka Langley Soryu</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Asuka Langley Soryu')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Boa Hancock" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/boa_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/boa_pfp.jpg">
+                                    <span class="text nav-text">Boa Hancock</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Boa Hancock')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Haruno Yukinoshita" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/haruno_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/haruno_pfp.jpg">
+                                    <span class="text nav-text">Haruno Yukinoshita</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Haruno Yukinoshita')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Himeko Inaba" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/inaba1_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/inaba1_pfp.jpg">
+                                    <span class="text nav-text">Himeko Inaba</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Himeko Inaba')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Makima" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/makima_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/makima_pfp.jpg">
+                                    <span class="text nav-text">Makima</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Makima')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Misato Katsuragi" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/misato_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/misato_pfp.jpg">
+                                    <span class="text nav-text">Misato Katsuragi</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Misato Katsuragi')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Reze" data-img="/static/images/yukino_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/reze_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/reze_pfp.jpg">
+                                    <span class="text nav-text">Reze</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Reze')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Alya" data-img="/static/images/alya_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/alya_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/alya_pfp.jpg">
+                                    <span class="text nav-text">Alisa Mikhailovna Kujou</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Alya')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Kyouko Hori" data-img="/static/images/hori_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/hori_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/hori_pfp.jpg">
+                                    <span class="text nav-text">Kyouko Hori</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Kyouko Hori')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Emilia" data-img="/static/images/emilia_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/emilia_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/emilia_pfp.jpg">
+                                    <span class="text nav-text">Emilia</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Emilia')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Mai Sakurajima" data-img="/static/images/mai_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/mai_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/mai_pfp.jpg">
+                                    <span class="text nav-text">Mai Sakurajima</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Mai Sakurajima')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Echidna" data-img="/static/images/echidna.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/echidna_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/echidna_pfp.jpg">
+                                    <span class="text nav-text">Echidna</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Echidna')">★</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link" data-name="Anri Teieri" data-img="/static/images/anri_pfp.jpg" data-desc="Cool, perfectionist, and sharp-tongued girl from Oregairu.">
+                                <a href="#">
+                                    <img class="waifu-one" src="/static/images/anri_pfp.jpg" onclick="openFullImage(this)" data-fullsize="/static/images/anri_pfp.jpg">
+                                    <span class="text nav-text">Anri Teieri</span>
+                                    <span class="favourite" onclick="toggleFavourite(event, 'Anri Teieri')">★</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>  
                 </div>
-            </div>
-        </nav>
+            </div>    
+        </div>    
+
+        <div id="waifuOverview" class="overview-panel">
+            <img id="overviewImg" src="" alt="Waifu Image">
+            <h2 id="overviewName"></h2>
+            <p id="overviewDesc"></p>
+            <div id="overviewStats"></div>
+
+            <button id="chatButton" class="chat-btn">Chat</button>
+        </div>
+
 
         <div id="imageModal" class="modal" onclick="closeFullImage()">
         <span class="close">&times;</span>
         <img class="modal-content" id="modalImage">
     </div>
+
+    <script src="{{ url_for('static', filename='js/selection.js') }}"></script>
 </body>
 
-<script>
-    // Toggle Sidebar
-    document.querySelector('.toggle').addEventListener('click', () => {
-        document.querySelector('.sidebar').classList.toggle('collapsed');
-    });
 
-    // Real-time Search
-    const searchInput = document.getElementById("waifuSearch");
-    const favouriteCheckbox = document.getElementById("filterFavourites");
-
-    searchInput.addEventListener("input", filterList);
-    favouriteCheckbox.addEventListener("change", filterList);
-
-    /*searchInput.addEventListener("input", () => {
-        const query = searchInput.value.toLowerCase();
-        const waifuLinks = document.querySelectorAll(".menu-link .nav-link");
-
-        waifuLinks.forEach(link => {
-            if (!dataName) return; // skip if missing
-
-            const waifuName = link.textContent.toLowerCase();
-            if (waifuName.includes(query)) {
-                link.style.display = "flex";
-            } else {
-                link.style.display = "none";
-            }
-        });
-    });*/
-
-    // Favourites
-    /*document.querySelectorAll(".favourite").forEach(star => {
-        star.addEventListener("click", e => {
-            e.preventDefault();
-            e.stopPropagation();
-            star.classList.toggle("favourited");
-        });
-    });*/
-
-    function filterList() {
-        const query = searchInput.value.toLowerCase();
-        const showfavourites = favouriteCheckbox.checked;
-        const links = document.querySelectorAll(".nav-link");
-
-        links.forEach(link => {
-            const name = link.getAttribute('data-name').toLowerCase();
-            const isfavourite = localStorage.getItem('favourite_' + link.getAttribute('data-name')) === 'true';
-
-            const matchesSearch = name.includes(query);
-            const matchesfavourite = !showfavourites || isfavourite;
-
-            link.style.display = matchesSearch && matchesfavourite ? "flex" : "none";
-        });
-    }
-
-    function toggleFavourite(e, name) {
-        e.stopPropagation();
-        const key = 'favourite_' + name;
-        const current = localStorage.getItem(key) === 'true';
-        localStorage.setItem(key, !current);
-        updatefavouriteIcons();
-        filterList();
-    }
-
-    function updatefavouriteIcons() {
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const name = link.getAttribute('data-name');
-            const icon = link.querySelector('.favourite');
-            if (localStorage.getItem('favourite_' + name) === 'true') {
-                icon.classList.add('favourited');
-            } else {
-                icon.classList.remove('favourited');
-            }
-        });
-    }
-
-    updatefavouriteIcons();
-    filterList();
-
-    // Keyboard navigation
-    let currentIndex = -1;
-    document.addEventListener('keydown', (e) => {
-        const visibleItems = Array.from(document.querySelectorAll('.nav-link')).filter(item => item.style.display !== 'none');
-        if (e.key === 'ArrowDown') {
-            currentIndex = (currentIndex + 1) % visibleItems.length;
-            visibleItems[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else if (e.key === 'ArrowUp') {
-            currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
-            visibleItems[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-    });
-</script>
 
 </html>

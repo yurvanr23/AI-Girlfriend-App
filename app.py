@@ -147,7 +147,17 @@ def submit_key():
     session['eleven_key'] = eleven_key if eleven_key else None # Store Eleven Labs key if provided
     
     #return redirect(url_for('home'))
-    return redirect(url_for('index'))  # If empty, stay on same page
+    return redirect(url_for('selection'))  # If empty, stay on same page
+
+@app.route('/selection')
+def selection():
+    openrouter_key = session.get('openrouter_key') or request.form.get('openrouter_key')
+    eleven_key = session.get('eleven_key')
+
+    """if not openrouter_key:
+        return redirect(url_for('home'))"""
+    
+    return render_template('selection.html')
 
 @app.route('/index')
 def index():

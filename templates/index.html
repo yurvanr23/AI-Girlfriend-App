@@ -40,6 +40,10 @@
         const openrouter_key = localStorage.getItem('openrouter_key');
         const elevenlabs_key = localStorage.getItem('elevenlabs_key');
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const waifuName = urlParams.get("waifu");
+        console.log("Chatting with:", waifuName);
+
         //document.getElementById('openrouter_key').textContent = openrouter_key;
         //document.getElementById('elevenlabs_key').textContent = elevenlabs_key;
 
