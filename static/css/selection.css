@@ -361,6 +361,37 @@ header .image-text .header-text {
     font-family: 'Lobster', sans-serif;
 }
 
+#waifuOverview {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Create a blurred layer */
+#waifuOverview.blurred-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-size: cover;
+    background-position: center;
+    filter: blur(45px) brightness(0.75);
+    transform: scale(1.3); /* prevent the blur edges */
+    z-index: 0;
+
+    mask-image: radial-gradient(circle at center, 
+        rgba(0,0,0,1) 60%,   /* visible center */
+        rgba(0,0,0,0) 100%   /* fully faded edges */
+    );
+}
+
+/* Ensure text/content stays above the blur */
+#waifuOverview > * {
+    position: relative;
+    z-index: 2;
+}
 
 .search-box .sidebar {
     background: lightcoral;
@@ -393,6 +424,36 @@ header .image-text .header-text {
 .nav-text {
     flex: 1;
     font-size: 15px;
+}
+
+.goku-special {
+    background: rgba(160, 90, 255, 0.35);;
+    position: relative;
+    overflow: hidden;
+}
+
+.goku-special:hover img.waifu-one {
+    opacity: 0;
+}
+
+.goku-special::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    transform: scale(1.05); /* slight zoom for effect */
+}
+
+/* Show big background image on hover */
+.goku-special:hover::before {
+    opacity: 1;
+    transform: scale(1.15);
 }
 
 .nav-link {
